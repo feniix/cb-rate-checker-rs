@@ -7,3 +7,8 @@
 * `cargo build`
 * `./target/debug/cb-rates-checker-rust`
 
+```
+JsonValue(0.00208132)
+Short("0.00208132")
+"480.46"
+```
