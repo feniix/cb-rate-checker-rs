@@ -18,7 +18,7 @@ fn main() {
     println!("JsonValue({})", data["data"]["rates"]["ETH"]);
     println!("{:?}", data["data"]["rates"]["ETH"]);
     let btc = BigDecimal::from_str(&data["data"]["rates"]["ETH"].to_string()).unwrap();
-    let one = BigDecimal::from_str("1").unwrap();
+    let one = BigDecimal::from(1);
     let rate: BigDecimal = one / btc;
     println!("{:?}", rate.with_scale(2).to_string());
 
