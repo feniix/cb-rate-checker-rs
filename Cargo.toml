@@ -4,7 +4,6 @@ version = "0.1.0"
 authors = ["Sebastian Otaegui <feniix@gmail.com>"]
 
 [dependencies]
-hyper = "~0"
-requests = "~0"
-json = "~0"
-bigdecimal = "~0"
+reqwest = "0.9.17"
+rust_decimal = "1.0.1"
+serde = "1.0.91"

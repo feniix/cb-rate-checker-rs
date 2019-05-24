@@ -1,25 +1,34 @@
-extern crate requests;
-extern crate bigdecimal;
-extern crate json;
+extern crate reqwest;
+extern crate rust_decimal;
+extern crate serde;
 
-// adds method .json() to the Response class
-use requests::ToJson;
+use rust_decimal::Decimal;
+use serde::Deserialize;
 
-use std::str::FromStr;
-use bigdecimal::BigDecimal;
+#[derive(Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
+struct Rates {
+    // btc: Decimal,
+    eth: Decimal,
+}
 
-//use requests::{Codes, Request, Response, StatusCode};
+#[derive(Deserialize)]
+struct Data {
+    // currency: String,
+    rates: Rates,
+}
 
-fn main() {
+#[derive(Deserialize)]
+struct Body {
+    data: Data,
+}
 
+fn main() -> reqwest::Result<()> {
     const URL: &str = "https://api.coinbase.com/v2/exchange-rates";
-    let res = requests::get(URL).unwrap();
-    let data = res.json().unwrap();
-    println!("JsonValue({})", data["data"]["rates"]["ETH"]);
-    println!("{:?}", data["data"]["rates"]["ETH"]);
-    let btc = BigDecimal::from_str(&data["data"]["rates"]["ETH"].to_string()).unwrap();
-    let one = BigDecimal::from(1);
-    let rate: BigDecimal = one / btc;
-    println!("{:?}", rate.with_scale(2).to_string());
-
+    let body: Body = reqwest::get(URL)?.json()?;
+    let rates = body.data.rates;
+    println!("ETC Rate: {}", rates.eth);
+    let rate = (Decimal::from(1) / rates.eth).round_dp(2);
+    println!("Dollars Per Ether: {}", rate);
+    Ok(())
 }
